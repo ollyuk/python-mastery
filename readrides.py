@@ -1,3 +1,5 @@
+# todo: loop over the 4 different ways to read the data and display the results in a table
+
 from collections import namedtuple
 import csv
 import time
