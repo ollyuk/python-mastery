@@ -125,10 +125,6 @@ def run_test(function_name, class_name=None):
         else:
             print(f"Function '{function_name}' not found or not callable.")
 
-        # rows = read_rides_as_tuples('Data/ctabus.csv')
-        # rows = read_rides_as_namedtuple('Data/ctabus.csv')
-        # rows = read_rides_as_dict('Data/ctabus.csv')
-
     current, peak = tracemalloc.get_traced_memory()
     tracemalloc.stop()
     end_time = time.time()
@@ -137,28 +133,25 @@ def run_test(function_name, class_name=None):
 
 
 if __name__ == '__main__':
+    results = []
     function_names = ('read_rides_as_tuples', 'read_rides_as_dict')
     for func in function_names:
         current, peak, elapsed_time = run_test(func, [])
 
-        print(f'{func} --------------------------------------------------------------------------------')
-        print(f'Memory Use: Current {current / (1024 * 1024):.2f}MB, Peak {peak / (1024 * 1024):.2f}MB')
-        print(f'Elapsed Time: {elapsed_time:.2f}s')
+        results.append((func, current, peak, elapsed_time))
 
     current, peak, elapsed_time = run_test('read_rides_as_class', [Row_slot])
+    results.append(('Row_slot', current, peak, elapsed_time))
     current, peak, elapsed_time = run_test('read_rides_as_class', [Row])
+    results.append(('Row', current, peak, elapsed_time))
     # rows = read_rides_as_tuples('Data/ctabus.csv')
 
-    # tracemalloc.start()
-    # start_time = time.time()
-    # rows = read_rides_as_namedtuple('Data/ctabus.csv')
-    # current, peak = tracemalloc.get_traced_memory()
-    # tracemalloc.stop()
-    # end_time = time.time()
-    # elapsed_time = end_time - start_time
-    # print(f'read_rides_as_namedtuple --------------------------------------------------------------------------------')
-    # print(f'Memory Use: Current {current / (1024 * 1024):.2f}MB, Peak {peak / (1024 * 1024):.2f}MB')
-    # print(f'Elapsed Time: {elapsed_time:.2f}s')
+    print('\n---\n')
+
+    for result in results:
+        print(f'{result[0]}')
+        print(f'Memory Use: Current {result[1]/ (1024 * 1024):.2f}MB, Peak {result[2] / (1024 * 1024):.2f}MB')
+        print(f'Elapsed Time: {result[3]:.2f}s\n')
 
     # rows = read_rides_as_dict('Data/ctabus.csv')
     # rows = read_rides_as_class('Data/ctabus.csv', Row_slot)

@@ -14,10 +14,16 @@ print(f'Unique routes in Chicago {len({route[0] for route in rows}):,}')
 
 travel_date = '02/02/2011'
 date2_2_01 = [row for row in rows if row[1] == travel_date]
+print(f'Passengers on route 2, {travel_date} - {sum([pas[3] for pas in date2_2_01 if pas[0] == "22"])}')
 
-print(f'Passengers on route 2, {travel_date} - {sum([pas[3] for pas in date2_2_01 if pas[0] == "2"])}')
 
-print(f'Passengers on all routes - {sum([pas[3] for pas in rows]):,}')
+rides_per_route = Counter()
+for row in rows:
+    rides_per_route[row[0]] += int(row[3])
+
+for route, count in rides_per_route.most_common():
+    print('%5s %10d' % (route, count))
+
 
 # all the data for the 2001 grouped by route
 date2001 = [(row[0], row[3]) for row in rows if '/2001' in row[1]]
