@@ -16,32 +16,32 @@ def read_portfolio(filename):
             portfolio.append(record)
     return portfolio
 
+if __name__ == '__main__':
+    portfolio = read_portfolio('Data/portfolio.csv')
 
-portfolio = read_portfolio('Data/portfolio.csv')
+    print('holidings > 100 shares')
+    print([s for s in portfolio if s['shares'] > 100])
 
-print('holidings > 100 shares')
-print([s for s in portfolio if s['shares'] > 100])
+    print('total value of all shares')
+    print(sum(s['shares'] * s['price'] for s in portfolio))
 
-print('total value of all shares')
-print(sum(s['shares'] * s['price'] for s in portfolio))
+    print('all unique stock names')
+    print({s['name'] for s in portfolio})
 
-print('all unique stock names')
-print({s['name'] for s in portfolio})
+    print('all holdings')
+    print([s['name'] for s in portfolio])
 
-print('all holdings')
-print([s['name'] for s in portfolio])
+    print('Count the total shares of each stock')
+    total = {s['name']: 0 for s in portfolio}
+    for s in portfolio:
+        total[s['name']] += s['shares']
 
-print('Count the total shares of each stock')
-total = {s['name']: 0 for s in portfolio}
-for s in portfolio:
-    total[s['name']] += s['shares']
-
-print(total)
+    print(total)
 
 
-totals = Counter()
-for s in portfolio:
-    totals[s['name']] += s['shares']
+    totals = Counter()
+    for s in portfolio:
+        totals[s['name']] += s['shares']
 
-print(totals)
+    print(totals)
 
