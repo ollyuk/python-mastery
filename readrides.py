@@ -129,7 +129,27 @@ def run_test(function_name, class_name=None):
     tracemalloc.stop()
     end_time = time.time()
     elapsed_time = end_time - start_time
-    return (current,peak,elapsed_time)
+    return (current, peak, elapsed_time)
+
+
+def read_rides_as_columns(filename):
+    '''
+    Read the bus ride data into 4 lists, representing columns
+    '''
+
+    routes = []
+    dates = []
+    daytypes = []
+    numrides = []
+    with open(filename) as f:
+        rows = csv.reader(f)
+        headins = next(rows)
+        for row in rows:
+            routes.append(row[0])
+            dates.append(row[1])
+            daytypes.append(row[2])
+            numrides.append(int(row[3]))
+    return dict(routes=routes, dates=dates, daytypes=daytypes, numrides=numrides)
 
 
 if __name__ == '__main__':
@@ -150,7 +170,7 @@ if __name__ == '__main__':
 
     for result in results:
         print(f'{result[0]}')
-        print(f'Memory Use: Current {result[1]/ (1024 * 1024):.2f}MB, Peak {result[2] / (1024 * 1024):.2f}MB')
+        print(f'Memory Use: Current {result[1] / (1024 * 1024):.2f}MB, Peak {result[2] / (1024 * 1024):.2f}MB')
         print(f'Elapsed Time: {result[3]:.2f}s\n')
 
     # rows = read_rides_as_dict('Data/ctabus.csv')
