@@ -1,3 +1,4 @@
+import collections
 import tracemalloc
 # todo: loop over the 4 different ways to read the data and display the results in a table
 
@@ -150,6 +151,30 @@ def read_rides_as_columns(filename):
             daytypes.append(row[2])
             numrides.append(int(row[3]))
     return dict(routes=routes, dates=dates, daytypes=daytypes, numrides=numrides)
+
+
+class RideData(collections.Sequence):
+    def __init__(self):
+        self.routes = []
+        self.dates = []
+        self.daytypes = []
+        self.numrides = []
+
+    def __getitem__(self, index):
+        return {'route': self.routes[index],
+                'date': self.dates[index],
+                'daytypes': self.daytypes[index],
+                'numrides': self.numrides[index]}
+
+    def __len__(self):
+        # all lists assumed to have the same length so just return the len of one
+        return len(self.routes)
+
+    def append(self,d):
+        self.routes.append(d['route'])
+        self.dates.append(d['dates'])
+        self.daytypes.append(d['daytype'])
+        self.numrides.append(d['numride'])
 
 
 if __name__ == '__main__':
