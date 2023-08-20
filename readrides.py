@@ -1,9 +1,11 @@
+import collections
 import tracemalloc
 # todo: loop over the 4 different ways to read the data and display the results in a table
 
 from collections import namedtuple
 import csv
 import time
+from pprint import pprint
 
 
 # tuple
@@ -58,11 +60,11 @@ class Row_slot:
 
 
 # a dictionary
-def read_rides_as_dict(filename):
+def read_rides_as_dicts(filename):
     '''
     Read the bus ride data as a list of dictionaries
     '''
-    records = []
+    records = RideData()
     with open(filename) as f:
         rows = csv.reader(f)
         headings = next(rows)  # Skip headers
@@ -152,9 +154,52 @@ def read_rides_as_columns(filename):
     return dict(routes=routes, dates=dates, daytypes=daytypes, numrides=numrides)
 
 
+class RideData(collections.abc.Sequence):
+    def __init__(self):
+        # Each value is a list with all of the values (a column)
+        self.routes = []
+        self.dates = []
+        self.daytypes = []
+        self.numrides = []
+
+    def __len__(self):
+        # All lists assumed to have the same length
+        return len(self.routes)
+
+    def __getitem__(self, index):
+        print(index)
+        # slice(1, 2, None)
+        if isinstance(index, slice):
+            ret_val = []
+            for n in range(index.start, index.stop+1):
+                ret_val.append(
+                    {'route': self.routes[n],
+                     'date': self.dates[n],
+                     'daytype': self.daytypes[n],
+                     'rides': self.numrides[n]}
+                )
+        else:
+            ret_val = {'route': self.routes[index],
+                       'date': self.dates[index],
+                       'daytype': self.daytypes[index],
+                       'rides': self.numrides[index]}
+        return ret_val
+
+    def append(self, d):
+        self.routes.append(d['route'])
+        self.dates.append(d['date'])
+        self.daytypes.append(d['daytype'])
+        self.numrides.append(d['rides'])
+
+
 if __name__ == '__main__':
     results = []
-    function_names = ('read_rides_as_tuples', 'read_rides_as_dict')
+    row_cols = read_rides_as_dicts('Data/ctabus.csv')
+    pprint(row_cols[0:2])
+
+    exit()
+
+    function_names = ('read_rides_as_tuples', 'read_rides_as_dicts')
     for func in function_names:
         current, peak, elapsed_time = run_test(func, [])
 
