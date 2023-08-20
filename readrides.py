@@ -60,7 +60,7 @@ class Row_slot:
 
 
 # a dictionary
-def read_rides_as_dicts(filename):
+def read_rides_as_dict(filename):
     '''
     Read the bus ride data as a list of dictionaries
     '''
