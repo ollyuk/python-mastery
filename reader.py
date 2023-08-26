@@ -14,6 +14,17 @@ def read_csv_as_dicts(filepath, coltypes):
     return list_dicts
 
 
+def read_csv_as_columns(filepath, types):
+    f = open(filepath)
+    rows = csv.reader(f)
+    headers = next(rows)
+    records = RideData(headers, types)
+
+    for row in rows:
+        records.append({name: func(val) for name, func, val in zip(headers, types, row)})
+    return records
+
+
 def read_rides_as_dict(filename):
     '''
     Read the bus ride data as a list of dictionaries
@@ -37,20 +48,25 @@ def read_rides_as_dict(filename):
     return records
 
 
+# data = read_csv_as_columns('Data/ctabus.csv', types=[str, str, str, int])
 class RideData(collections.abc.Sequence):
-    def __init__(self):
-        # Each value is a list with all of the values (a column)
-        self.routes = []
-        self.dates = []
-        self.daytypes = []
-        self.numrides = []
+    def __init__(self, headers, types):
+        self.headers = headers
+        for val in headers:
+            setattr(self, val, [])
+            print(f'setting {val} as []')
+
+    def __getattr__(self, name):
+        if name in self._data:
+            return self._data[name]
+        raise AttributeError(f"'DynamicProperties' object has no attribute '{name}'")
+
 
     def __len__(self):
         # All lists assumed to have the same length
         return len(self.routes)
 
     def __getitem__(self, index):
-        print(index)
         # slice(1, 2, None)
         if isinstance(index, slice):
             ret_val = []
@@ -68,11 +84,16 @@ class RideData(collections.abc.Sequence):
                        'rides': self.numrides[index]}
         return ret_val
 
+    def get_attribute_names(self):
+        return list(self._data.keys())
+
     def append(self, d):
-        self.routes.append(d['route'])
-        self.dates.append(d['date'])
-        self.daytypes.append(d['daytype'])
-        self.numrides.append(d['rides'])
+        for row in d:
+            print(type(row))
+            # for key, value in row.items():
+            #     print('appending ', key, value)
+        # for property in self.dict():
+        #     print('appending', d)
 
 
 def get_formatted_traced_memory():
