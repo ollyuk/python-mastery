@@ -23,7 +23,6 @@ class Stock:
 class Portfolio:
     def __init__(self, headers):
         self.headers = headers
-        self.divider = ('------', '------', '------')
         self.portfolio = []
 
     def __add__(self, stock):
@@ -31,7 +30,7 @@ class Portfolio:
 
     def print_portfolio(self):
         print('%10s %10s %10s' % tuple(self.headers))
-        print('%10s %10s %10s' % tuple(self.divider))
+        print(('-' * 10 + ' ') * 3)
         for s in self.portfolio:
             print('%10s %10d %10.2f' % (s.name, s.shares, s.price))
 
