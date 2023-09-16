@@ -1,45 +1,38 @@
-import csv
-
-
 class Stock:
     def __init__(self, name, shares, price):
         self.name = name
-        self.shares = int(shares)
-        self.price = float(price)
+        self.shares = shares
+        self.price = price
 
     def cost(self):
-        cost = self.shares * self.price
-        return f'{cost:.2f}'
+        return self.shares * self.price
 
-    def sell(self, value):
-        self.shares = self.shares - value
-        return self.shares
+    def sell(self, nshares):
+        self.shares -= nshares
 
-    def __str__(self):
-        # return f'{self.name=} {self.shares=} {self.price=}'
-        return f'{self.name} {self.shares} {self.price}'
-
-
-class Portfolio:
-    def __init__(self, headers):
-        self.headers = headers
-        self.portfolio = []
-
-    def __add__(self, stock):
-        self.portfolio.append(stock)
-
-    def print_portfolio(self):
-        print('%10s %10s %10s' % tuple(self.headers))
-        print(('-' * 10 + ' ') * 3)
-        for s in self.portfolio:
-            print('%10s %10d %10.2f' % (s.name, s.shares, s.price))
-
-
-def read_portfolio(filepath):
-    with open(filepath) as f:
+def read_portfolio(filename):
+    '''
+    Read a CSV file of stock data into a list of Stocks
+    '''
+    import csv
+    portfolio = []
+    with open(filename) as f:
         rows = csv.reader(f)
         headers = next(rows)
-        p = Portfolio(headers)
         for row in rows:
-            p.portfolio.append(Stock(row[0], row[1], row[2]))
-    return p
+            record = Stock(row[0], int(row[1]), float(row[2]))
+            portfolio.append(record)
+    return portfolio
+
+def print_portfolio(portfolio):
+    '''
+    Make a nicely formatted table showing stock data
+    '''
+    print('%10s %10s %10s' % ('name', 'shares', 'price'))
+    print(('-'*10 + ' ')*3)
+    for s in portfolio:
+        print('%10s %10d %10.2f' % (s.name, s.shares, s.price))
+
+if __name__ == '__main__':
+    portfolio = read_portfolio('Data/portfolio.csv')
+    print_portfolio(portfolio)
