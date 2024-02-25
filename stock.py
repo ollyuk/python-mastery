@@ -1,3 +1,4 @@
+# stock.py
 class Stock:
     types = (str, int, float)
 
@@ -16,6 +17,7 @@ class Stock:
 
     def sell(self, nshares):
         self.shares -= nshares
+
 
 def read_portfolio(filename):
     '''
