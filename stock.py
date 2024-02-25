@@ -33,13 +33,13 @@ def read_portfolio(filename):
         rows = csv.reader(f)
         headers = next(rows)
         for row in rows:
-            record = Stock(row[0], int(row[1]), float(row[2]))
+            record = Stock.from_row((row[0], int(row[1]), float(row[2])))
             portfolio.append(record)
     return portfolio
 
 
 # exercise C) modify to create objects using a class other than `Stock`
-def read_portfolio_cust(filename, class_type):
+def read_portfolio_cust(filename, stock=Stock):
     '''
     Read a CSV file of stock data into a list of Stocks
     '''
@@ -49,7 +49,7 @@ def read_portfolio_cust(filename, class_type):
         rows = csv.reader(f)
         headers = next(rows)
         for row in rows:
-            record = class_type(row[0], int(row[1]), float(row[2]))
+            record = stock.from_row((row[0], row[1], row[2]))
             portfolio.append(record)
     return portfolio
 

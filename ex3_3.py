@@ -1,6 +1,7 @@
 # from our stock module import the class Stock to the local scope.
 from stock import Stock
 from stock import DStock
+import stock
 
 row = ['AA', '100', '32.20']
 
@@ -11,3 +12,7 @@ print(f'{s.name=}, {s.price=} * {s.shares=}={s.cost()}')
 
 sd = DStock.from_row(row)
 print(f'{sd.name=}, {sd.price=} * {sd.shares=}={sd.cost()}')
+
+
+pf = stock.read_portfolio_cust('Data/portfolio.csv', DStock)
+stock.print_portfolio(pf)
