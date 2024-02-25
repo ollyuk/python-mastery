@@ -1,4 +1,5 @@
 # stock.py
+from decimal import Decimal
 class Stock:
     types = (str, int, float)
 
@@ -18,6 +19,9 @@ class Stock:
     def sell(self, nshares):
         self.shares -= nshares
 
+# new subclass that inherits from Stock class
+class DStock(Stock):
+    types = (str, int, Decimal)
 
 def read_portfolio(filename):
     '''
