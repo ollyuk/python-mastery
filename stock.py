@@ -8,9 +8,20 @@ class Stock:
     def __init__(self, name, shares, price):
         name, shares, price = [func(val) for func, val in zip(self._types, [name, shares, price])]
         self.name = name
-        self.shares = shares
+        self._shares = shares
         self.price = price
 
+    @property
+    def shares(self):
+        return self._shares
+
+    @shares.setter
+    def shares(self, value):
+        if not isinstance(value, int):
+            raise TypeError('Expected int')
+        if value < 0:
+            raise ValueError('Must be positive value')
+        self._shares = value
     @classmethod
     def from_row(cls, row):
         values = [func(val) for func, val in zip(cls._types, row)]
