@@ -1,16 +1,18 @@
 # stock.py
 from decimal import Decimal
 class Stock:
-    types = (str, int, float)
+    _types = (str, int, float)
 
     def __init__(self, name, shares, price):
+        name, shares, price = [func(val) for func, val in zip(self._types, [name, shares, price])]
         self.name = name
         self.shares = shares
         self.price = price
+        self._cost = self.cost()
 
     @classmethod
     def from_row(cls, row):
-        values = [func(val) for func, val in zip(cls.types, row)]
+        values = [func(val) for func, val in zip(cls._types, row)]
         return cls(*values)
 
     def cost(self):
@@ -21,8 +23,15 @@ class Stock:
 
 # new subclass that inherits from Stock class
 class DStock(Stock):
-    types = (str, int, Decimal)
+    _types = (str, int, Decimal)
 
+    def __init__(self, name, shares, price):
+        TWOPLACES = Decimal('0.01')
+        name, shares, price = [func(val) for func, val in zip(self._types, [name, shares, price])]
+        self.name = name
+        self.shares = shares
+        self.price = price
+        self._cost = Decimal(self.cost()).quantize(TWOPLACES)
 def read_portfolio(filename):
     '''
     Read a CSV file of stock data into a list of Stocks

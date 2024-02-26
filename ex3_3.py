@@ -15,7 +15,7 @@ sd = DStock.from_row(row)
 print(f'{sd.name=}, {sd.price=} * {sd.shares=}={sd.cost()}')
 
 
-pf = stock.read_portfolio_cust('Data/portfolio.csv', DStock)
+pf = stock.read_portfolio_cust('Data/portfolio.csv', Stock)
 stock.print_portfolio(pf)
 
 # create a list stocks by specifying the source and Stock class to use.
