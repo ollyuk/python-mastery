@@ -9,7 +9,7 @@ class Stock:
         name, shares, price = [func(val) for func, val in zip(self._types, [name, shares, price])]
         self.name = name
         self._shares = shares
-        self.price = price
+        self._price = price
 
     @property
     def shares(self):
@@ -20,8 +20,21 @@ class Stock:
         if not isinstance(value, int):
             raise TypeError('Expected int')
         if value < 0:
-            raise ValueError('Must be positive value')
+            raise ValueError('Shares must be >= 0')
         self._shares = value
+
+    @property
+    def price(self):
+        return self._price
+
+    @price.setter
+    def price(self, value):
+        if not isinstance(value, float):
+            raise TypeError('Expected float')
+        if value < 0:
+            raise ValueError('Price must be >= 0')
+        self._price = value
+
     @classmethod
     def from_row(cls, row):
         values = [func(val) for func, val in zip(cls._types, row)]
@@ -37,8 +50,6 @@ class Stock:
 
 # new subclass that inherits from Stock class
 class DStock(Stock):
-    _types = (str, int, Decimal)
-
     @property
     def cost(self):
         TWOPLACES = Decimal('0.01')

@@ -4,6 +4,8 @@ row = ['a', 100, 22.32]
 
 s = stock.DStock(*row)
 stock.print_portfolio([s])
-s.shares = -10
-s.shares = '10'
+
+print(s.price)
+s.price = -0.01
+
 print(s.cost)
