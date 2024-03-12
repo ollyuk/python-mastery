@@ -6,9 +6,9 @@ import collections
 def read_csv_as_instances(filename, cls):
     '''
     Read a CSV file into a list of instances
-    :param filename:
-    :param cls:
-    :return:
+    :param filename: CSV file of stocks
+    :param cls: Class to use when iterating over CSV
+    :return: a list of class instances representing the CSV file
     '''
     records = []
     with open(filename) as f:
